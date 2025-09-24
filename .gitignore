@@ -1,0 +1,118 @@
+# Go语言相关
+# 二进制文件
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+sowhp
+
+# 测试二进制文件，使用go test -c构建
+*.test
+
+# 输出的delve调试器二进制文件
+__debug_bin
+
+# 依赖管理工具
+vendor/
+
+# Go工作空间文件
+go.work
+
+# 测试覆盖率文件
+*.out
+*.prof
+
+# 操作系统相关文件
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# IDE和编辑器相关
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# 项目特定文件
+# 生成的结果目录
+result/
+
+# 生成的报告文件
+*.csv
+*.html
+*.txt
+!README.md
+!go.mod
+!go.sum
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+
+# 配置文件（如果包含敏感信息）
+config.json
+config.yaml
+config.yml
+.env
+.env.local
+
+# 备份文件
+*.bak
+*.backup
+
+# 压缩文件
+*.zip
+*.tar.gz
+*.rar
+*.7z

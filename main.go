@@ -1,7 +1,12 @@
 package main
 
-import "Sowhp/core"
+import (
+	"Sowhp/core"
+	"os"
+)
 
 func main() {
-	core.WorkIng()
+	if err := core.Run(); err != nil {
+		os.Exit(1)
+	}
 }

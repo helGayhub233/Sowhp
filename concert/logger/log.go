@@ -2,16 +2,17 @@ package logger
 
 import (
 	"fmt"
-	"github.com/gookit/color"
 	"os"
 	"path"
 	"regexp"
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/gookit/color"
 )
 
-var ( // 输出颜色设置
+var (
 	Red         = color.Red.Render
 	Cyan        = color.Cyan.Render
 	Yellow      = color.Yellow.Render
@@ -23,15 +24,13 @@ var ( // 输出颜色设置
 	LightWhite  = color.Style{color.White, color.OpBold}.Render
 	LightCyan   = color.Style{color.Cyan, color.OpBold}.Render
 	LightYellow = color.Style{color.Yellow, color.OpBold}.Render
-	//LightBlue  = color.Style{color.Blue, color.OpBold}.Render
 )
 
 var (
-	defaultLevel = LevelWarning // 输出等级
-	noWrite      int            // 不进行写入log
+	defaultLevel = LevelWarning
+	noWrite      int
 )
 
-// SetLevel 设置输出等级
 func SetLevel(l Level) {
 	defaultLevel = l
 }
@@ -42,15 +41,12 @@ func getCallerInfo(skip int) (info string) {
 		info = "runtime.Caller() failed"
 	}
 
-	// funcName := runtime.FuncForPC(pc).Name()
-	fileName := path.Base(file) // Base函数返回路径的最后一个元素
-	// return fmt.Sprintf("FuncName:%s, file:%s, line:%d", funcName, fileName, lineNo)
+	fileName := path.Base(file)
 	return fmt.Sprintf("%s line:%d", fileName, lineNo)
 }
 
-// log 日志输出效验判断
 func log(l Level, w int, detail string) {
-	switch LogLevel { // 判断配置文件中的日志输出等级，并设置到日志等级
+	switch LogLevel {
 	case 0:
 		SetLevel(0)
 	case 1:
@@ -65,10 +61,13 @@ func log(l Level, w int, detail string) {
 		SetLevel(5)
 	}
 
-	if l > defaultLevel { // 判断输入等级是否大于设置等级，若大于则当前日志则不进行输出
+	if l > defaultLevel {
 		return
 	}
-	if NoColor { // 判断是否关闭颜色输出
+
+	ClearProgressBar()
+
+	if NoColor {
 		fmt.Println(clean(detail))
 		return
 	} else {
@@ -76,10 +75,7 @@ func log(l Level, w int, detail string) {
 	}
 
 	if noWrite == 0 {
-		// 目前只写入 info 信息 和 Success 的信息
-		strTrim := fmt.Sprintf("[%s] ", Cyan(getDate())) // 匹配log日志前面的日期
-		detail := strings.TrimPrefix(detail, strTrim)    // 去除日期信息
-		writeLogFile(clean(detail), OutputFileName)      // 写入到本地文件
+		writeLogFile(clean(detail), OutputFileName)
 	}
 
 	if l == LevelFatal {
@@ -87,58 +83,59 @@ func log(l Level, w int, detail string) {
 	}
 }
 
-// Fatal 严重级别日志 log等级：0
 func Fatal(detail string) {
 	noWrite = 1
-	log(LevelFatal, noWrite, fmt.Sprintf("[%s] [%s] %s", Cyan(getDate()), LightRed("FATAL"), detail))
+	log(LevelFatal, noWrite, fmt.Sprintf("%s%s%s %s", LightWhite("["), LightRed("×"), LightWhite("]"), detail))
 }
 
-// Error 错误日志 log等级：1
 func Error(detail string) {
 	noWrite = 1
-	log(LevelError, noWrite, fmt.Sprintf("[%s] [%s] %s", Cyan(getDate()), LightRed("ERROR"), detail))
+	log(LevelError, noWrite, fmt.Sprintf("%s%s%s %s", LightWhite("["), LightRed("×"), LightWhite("]"), detail))
 }
 
-// Info 消息日志 log等级：2
+func ErrorWithContext(errorMsg, url string) {
+	noWrite = 1
+	log(LevelError, noWrite, fmt.Sprintf("%s%s%s %s%s%s 访问 %s 时遇到错误，重试中", LightWhite("["), LightRed("×"), LightWhite("]"), LightWhite("["), LightWhite(errorMsg), LightWhite("]"), url))
+}
+
 func Info(detail string) {
 	noWrite = 1
-	log(LevelInfo, noWrite, fmt.Sprintf("[%s] [%s] %s", Cyan(getDate()), LightGreen("INFO"), detail))
+	log(LevelInfo, noWrite, fmt.Sprintf("%s%s%s %s", LightWhite("["), LightGreen("√"), LightWhite("]"), detail))
 }
 
-// Warning 告警日志 log等级：3
 func Warning(detail string) {
 	noWrite = 1
-	log(LevelWarning, noWrite, fmt.Sprintf("[%s] [%s] %s", Cyan(getDate()), LightYellow("WARNING"), detail))
+	log(LevelWarning, noWrite, fmt.Sprintf("%s%s%s %s", LightWhite("["), LightYellow("!"), LightWhite("]"), detail))
 }
 
-// Debug 调试日志 log等级：4
+func WarningWithContext(errorMsg, url string) {
+	noWrite = 1
+	log(LevelWarning, noWrite, fmt.Sprintf("%s%s%s %s%s%s 访问 %s 时遇到错误，重试中", LightWhite("["), LightYellow("!"), LightWhite("]"), LightWhite("["), LightWhite(errorMsg), LightWhite("]"), url))
+}
+
 func Debug(detail string) {
 	noWrite = 1
-	log(LevelDebug, noWrite, fmt.Sprintf("[%s] [%s] [%s] %s", Cyan(getDate()), LightWhite("DEBUG"), Yellow(getCallerInfo(2)), detail))
+	log(LevelDebug, noWrite, fmt.Sprintf("%s%s%s %s%s%s %s", LightWhite("["), LightWhite("?"), LightWhite("]"), LightWhite("["), Yellow(getCallerInfo(2)), LightWhite("]"), detail))
 }
 
-// Verbose 详细调试信息日志 log等级：5
 func Verbose(detail string) {
 	noWrite = 1
-	log(LevelVerbose, noWrite, fmt.Sprintf("[%s] [%s] %s", Cyan(getDate()), LightCyan("VERBOSE"), detail))
+	log(LevelVerbose, noWrite, fmt.Sprintf("%s%s%s %s", LightWhite("["), LightCyan("i"), LightWhite("]"), detail))
 }
 
-// Success 成功信息日志 log等级：2
 func Success(detail string) {
 	noWrite = 1
-	log(LevelInfo, noWrite, fmt.Sprintf("[%s] [%s] %s", Cyan(getDate()), LightGreen("+"), detail))
+	log(LevelInfo, noWrite, fmt.Sprintf("%s", detail))
 }
 
-// Failed 失败信息日志 log等级：2
 func Failed(detail string) {
 	noWrite = 1
-	log(LevelInfo, noWrite, fmt.Sprintf("[%s] [%s] %s", Cyan(getDate()), LightRed("-"), detail))
+	log(LevelInfo, noWrite, fmt.Sprintf("%s%s%s %s", LightWhite("["), LightRed("×"), LightWhite("]"), detail))
 }
 
-// Common 普通信息日志 log等级：2
 func Common(detail string) {
 	noWrite = 1
-	log(LevelInfo, noWrite, fmt.Sprintf("[%s] [%s] %s", Cyan(getDate()), LightGreen("*"), detail))
+	log(LevelInfo, noWrite, fmt.Sprintf("%s", detail))
 }
 
 func getTime() string {
@@ -150,7 +147,6 @@ func getDate() string {
 }
 
 func DebugError(err error) bool {
-	/* Processing error display */
 	if err != nil {
 		pc, _, line, _ := runtime.Caller(1)
 		Debug(fmt.Sprintf("%s%s%s",
@@ -162,9 +158,8 @@ func DebugError(err error) bool {
 	return false
 }
 
-// Clean by https://github.com/acarl005/stripansi/blob/master/stripansi.go
 func clean(str string) string {
-	const ansi = "[\u001B\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[a-zA-Z\\d]*)*)?\u0007)|(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PRZcf-ntqry=><~]))"
+	const ansi = "[\u001B\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[a-zA-Z\\d]*)*)?)|(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PRZcf-ntqry=><~]))"
 	var re = regexp.MustCompile(ansi)
 	return re.ReplaceAllString(str, "")
 }
@@ -180,5 +175,67 @@ func writeLogFile(result string, filename string) {
 	fl.Close()
 	if err != nil {
 		fmt.Printf("Write %s error, %v\n", filename, err)
+	}
+}
+
+func ShowProgressBar(current, total int, prefix string) {
+	percent := float64(current) / float64(total) * 100
+	barLength := 50
+	filledLength := int(float64(barLength) * float64(current) / float64(total))
+
+	bar := strings.Repeat("█", filledLength) + strings.Repeat("░", barLength-filledLength)
+
+	if NoColor {
+		fmt.Printf("\r%s: [%s] %.1f%% (%d/%d)", prefix, bar, percent, current, total)
+	} else {
+		fmt.Printf("\r%s: [%s%s] %.1f%% (%d/%d)",
+			LightCyan(prefix),
+			LightWhite(strings.Repeat("█", filledLength)),
+			strings.Repeat("░", barLength-filledLength),
+			percent, current, total)
+	}
+
+	if current == total {
+		fmt.Println()
+	}
+}
+
+func ClearProgressBar() {
+	fmt.Print("\r" + strings.Repeat(" ", 80) + "\r")
+}
+
+func UpdateProgress(current, total int, message string) {
+	ShowProgressBar(current, total, message)
+}
+
+func ProgressWithColor(current, total int, prefix string, showETA bool) {
+	percent := float64(current) / float64(total) * 100
+	barLength := 40
+	filledLength := int(float64(barLength) * float64(current) / float64(total))
+
+	filledBar := LightWhite(strings.Repeat("█", filledLength))
+	emptyBar := strings.Repeat("░", barLength-filledLength)
+
+	etaInfo := ""
+	if showETA && current > 0 {
+		etaInfo = " | ETA: 计算中"
+	}
+
+	if NoColor {
+		fmt.Printf("\r%s: [%s] %.1f%% (%d/%d)%s",
+			prefix, strings.Repeat("█", filledLength)+strings.Repeat("░", barLength-filledLength),
+			percent, current, total, etaInfo)
+	} else {
+		fmt.Printf("\r%s: [%s%s] %s (%d/%d)%s",
+			LightCyan(prefix),
+			filledBar,
+			emptyBar,
+			LightWhite(fmt.Sprintf("%.1f%%", percent)),
+			current, total,
+			LightYellow(etaInfo))
+	}
+
+	if current == total {
+		fmt.Println()
 	}
 }
