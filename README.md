@@ -1,8 +1,8 @@
-# Sowhp 网站截图工具 - 修改版
+# Sowhp 网站截图工具
 
-## 项目介绍
+## 工具介绍
 
-本项目是基于 [sh1yan/Sowhp](https://github.com/sh1yan/Sowhp) 的优化修改版本.
+  本项目是基于 [sh1yan/Sowhp](https://github.com/sh1yan/Sowhp) 的优化修改版本。
 
 ## 功能特点
 
