@@ -1,5 +1,5 @@
 # Sowhp 网站截图工具
-<img src="https://raw.githubusercontent.com/helGayhub233/Sowhp/refs/heads/main/images/example_1.png" alt="示例图片" width="400"> <img src="https://raw.githubusercontent.com/helGayhub233/Sowhp/refs/heads/main/images/example_2.png" alt="示例图片" width="400">
+<img src="https://raw.githubusercontent.com/helGayhub233/Sowhp/refs/heads/main/images/example_1.png" alt="示例图片" width="500"> <img src="https://raw.githubusercontent.com/helGayhub233/Sowhp/refs/heads/main/images/example_2.png" alt="示例图片" width="450">
 ## 工具介绍
 
 本项目是基于 [sh1yan/Sowhp](https://github.com/sh1yan/Sowhp) 的优化版本。
@@ -7,7 +7,7 @@
 ## 功能特点
 
 - **批量截图**：支持批量处理URL列表，快速生成网页截图
-- **智能报告**：自动生成HTML和文本格式的详细报告
+- **智能报告**：自动生成HTML和CSV格式的详细报告
 - **智能重试**：HTTPS失败时自动尝试HTTP请求
 - **实时进度**：显示截图进度和处理状态
 
