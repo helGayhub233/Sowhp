@@ -1,6 +1,6 @@
 # Sowhp 网站截图工具
-![示例图片1](https://raw.githubusercontent.com/helGayhub233/Sowhp/refs/heads/main/images/example_1.png)
-![示例图片2](https://raw.githubusercontent.com/helGayhub233/Sowhp/refs/heads/main/images/example_2.png)
+<img src="https://raw.githubusercontent.com/helGayhub233/Sowhp/refs/heads/main/images/example_1.png" alt="示例图片" width="300">
+<img src="https://raw.githubusercontent.com/helGayhub233/Sowhp/refs/heads/main/images/example_2.png" alt="示例图片" width="300">
 ## 工具介绍
 
 本项目是基于 [sh1yan/Sowhp](https://github.com/sh1yan/Sowhp) 的优化版本。
