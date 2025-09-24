@@ -11,7 +11,7 @@
 - **智能重试**：HTTPS失败时自动尝试HTTP请求
 - **实时进度**：显示截图进度和处理状态
 
-## 主要改进和优化
+## 改进和优化
 
 ### ✨ 日志系统优化
 - 格式化输出显示
@@ -35,7 +35,7 @@ git clone <your-repo-url>
 cd Sowhp
 ```
 
-### 2. 编译项目
+### 2. 手动编译
 ```bash
 # 基础编译
 go build -o sowhp
@@ -83,36 +83,12 @@ example.org
 192.168.1.100
 ```
 
-## 项目结构
-
-```
-├── main.go              # 程序入口
-├── core/
-│   └── working.go       # 核心工作流程
-├── concert/
-│   ├── directoriescreat.go  # 目录创建
-│   └── logger/          # 日志系统
-│       ├── config.go
-│       ├── level.go
-│       ├── log.go
-│       └── logsync.go
-├── scripts/
-│   ├── Reporting.go     # 报告生成
-│   ├── conditionals.go  # 条件判断
-│   └── ipurlrelated.go  # URL处理和截图
-└── result/              # 输出目录
-    └── result_YYYYMMDD_NNNN/
-        ├── data/        # 截图文件
-        ├── *.html       # HTML报告
-        └── *.txt        # 文本报告
-```
-
 ## 输出说明
 
 程序运行后会在 `result` 目录下生成以下文件：
 - **截图文件**：保存在 `data/` 子目录中
 - **HTML报告**：包含截图预览和详细信息的网页报告
-- **文本报告**：纯文本格式的处理结果
+- **CSV报告**：生成CSV格式的处理结果用于批处理
 
 ## 更新记录
 
