@@ -130,11 +130,22 @@ func (rg *ReportGenerator) generateHTMLReport(data map[string][]string) error {
         .pagination button.active { background: #4CAF50; color: white; border-color: #4CAF50; }
         .pagination button:disabled { background: #f5f5f5; color: #999; cursor: not-allowed; }
         .response-content { max-width: 100%%; max-height: 300px; overflow: auto; font-family: 'Courier New', monospace; font-size: 10px; line-height: 1.2; background: #f8f8f8; padding: 6px; border-radius: 4px; white-space: pre-wrap; border: 1px solid #ddd; word-break: break-all; }
+<<<<<<< HEAD
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%%; height: 100%%; background-color: rgba(0,0,0,0.8); }
         .modal-content { position: absolute; top: 50%%; left: 50%%; transform: translate(-50%%, -50%%); max-width: 90%%; max-height: 90%%; }
         .modal img { max-width: 100%%; max-height: 100%%; border-radius: 8px; }
         .close { position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; }
         .close:hover { color: #bbb; }
+=======
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%%; height: 100%%; background-color: rgba(0,0,0,0.9); backdrop-filter: blur(2px); overflow-y: auto; }
+        .modal-content { position: absolute; top: 50%%; left: 50%%; transform: translate(-50%%, -50%%); max-width: 98%%; display: flex; align-items: center; justify-content: center; }
+        .modal img { max-width: 100%%; max-height: 100%%; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); transition: transform 0.3s ease; cursor: zoom-in; }
+        .modal img.zoomed { cursor: zoom-out; }
+        .loading-spinner { position: absolute; top: 50%%; left: 50%%; transform: translate(-50%%, -50%%); color: #fff; font-size: 18px; }
+        .zoom-controls { position: fixed; bottom: 30px; left: 50%%; transform: translateX(-50%%); z-index: 1001; display: flex; gap: 10px; }
+        .zoom-btn { background: rgba(0,0,0,0.7); color: white; border: none; padding: 10px 15px; border-radius: 25px; cursor: pointer; font-size: 16px; transition: all 0.3s ease; }
+        .zoom-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
+>>>>>>> e4b2f63 (feat: fix image bugs)
     </style>
 </head>
 <body>
@@ -169,8 +180,18 @@ func (rg *ReportGenerator) generateHTMLReport(data map[string][]string) error {
         </table>
         <div id="imageModal" class="modal">
             <div class="modal-content">
+<<<<<<< HEAD
                 <span class="close">&times;</span>
                 <img id="modalImage">
+=======
+                <div class="loading-spinner" id="loadingSpinner">加载中...</div>
+                <img id="modalImage" style="display: none;">
+            </div>
+            <div class="zoom-controls" id="zoomControls" style="display: none;">
+                <button class="zoom-btn" onclick="zoomImage(-0.2)">-</button>
+                <button class="zoom-btn" onclick="resetZoom()">重置</button>
+                <button class="zoom-btn" onclick="zoomImage(0.2)">+</button>
+>>>>>>> e4b2f63 (feat: fix image bugs)
             </div>
         </div>
     </div>
@@ -341,12 +362,51 @@ func (rg *ReportGenerator) generateHTMLReport(data map[string][]string) error {
             return str.substring(0, maxLen - 3) + '...';
         }
 
+<<<<<<< HEAD
+=======
+        let currentZoom = 1;
+        let isDragging = false;
+        let startX, startY, translateX = 0, translateY = 0;
+
+>>>>>>> e4b2f63 (feat: fix image bugs)
         function openModal(imageSrc) {
             try {
                 const modal = document.getElementById('imageModal');
                 const modalImg = document.getElementById('modalImage');
+<<<<<<< HEAD
                 if (modal && modalImg) {
                     modal.style.display = 'block';
+=======
+                const loadingSpinner = document.getElementById('loadingSpinner');
+                const zoomControls = document.getElementById('zoomControls');
+                
+                if (modal && modalImg && loadingSpinner) {
+                    modal.style.display = 'block';
+                    loadingSpinner.style.display = 'block';
+                    modalImg.style.display = 'none';
+                    zoomControls.style.display = 'none';
+                    
+                    // 重置缩放和位置
+                    currentZoom = 1.5;
+                    translateX = 0;
+                    translateY = 0;
+                    modalImg.style.transform = 'scale(1.5) translate(0px, 0px)';
+                    modalImg.classList.add('zoomed');
+                    
+                    modalImg.onload = function() {
+                        loadingSpinner.style.display = 'none';
+                        modalImg.style.display = 'block';
+                        zoomControls.style.display = 'flex';
+                    };
+                    
+                    modalImg.onerror = function() {
+                        loadingSpinner.innerHTML = '图片加载失败';
+                        setTimeout(() => {
+                            modal.style.display = 'none';
+                        }, 2000);
+                    };
+                    
+>>>>>>> e4b2f63 (feat: fix image bugs)
                     modalImg.src = imageSrc;
                 }
             } catch (e) {
@@ -354,6 +414,41 @@ func (rg *ReportGenerator) generateHTMLReport(data map[string][]string) error {
             }
         }
 
+<<<<<<< HEAD
+=======
+        function zoomImage(delta) {
+            const modalImg = document.getElementById('modalImage');
+            if (!modalImg) return;
+            
+            currentZoom = Math.max(0.5, Math.min(5, currentZoom + delta));
+            updateImageTransform();
+            
+            if (currentZoom > 1) {
+                modalImg.classList.add('zoomed');
+            } else {
+                modalImg.classList.remove('zoomed');
+            }
+        }
+
+        function resetZoom() {
+            currentZoom = 1.5;
+            translateX = 0;
+            translateY = 0;
+            updateImageTransform();
+            const modalImg = document.getElementById('modalImage');
+            if (modalImg) {
+                modalImg.classList.add('zoomed');
+            }
+        }
+
+        function updateImageTransform() {
+            const modalImg = document.getElementById('modalImage');
+            if (modalImg) {
+                modalImg.style.transform = 'scale(' + currentZoom + ') translate(' + translateX + 'px, ' + translateY + 'px)';
+            }
+        }
+
+>>>>>>> e4b2f63 (feat: fix image bugs)
         function initializeReport() {
             try {
                 console.log('Initializing report, data items:', window.reportData.items.length);
@@ -361,6 +456,7 @@ func (rg *ReportGenerator) generateHTMLReport(data map[string][]string) error {
                 renderPagination();
                 
                 const modal = document.getElementById('imageModal');
+<<<<<<< HEAD
                 const closeBtn = document.getElementsByClassName('close')[0];
                 
                 if (closeBtn) {
@@ -368,12 +464,60 @@ func (rg *ReportGenerator) generateHTMLReport(data map[string][]string) error {
                         modal.style.display = 'none';
                     };
                 }
+=======
+                const modalImg = document.getElementById('modalImage');
+>>>>>>> e4b2f63 (feat: fix image bugs)
                 
                 window.onclick = function(event) {
                     if (event.target === modal) {
                         modal.style.display = 'none';
+<<<<<<< HEAD
                     }
                 };
+=======
+                        resetZoom();
+                    }
+                };
+                
+                // 添加滚轮缩放功能
+                if (modalImg) {
+                    modalImg.addEventListener('wheel', function(e) {
+                        e.preventDefault();
+                        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+                        zoomImage(delta);
+                    });
+                    
+                    // 添加拖拽功能
+                    modalImg.addEventListener('mousedown', function(e) {
+                        if (currentZoom > 1) {
+                            isDragging = true;
+                            startX = e.clientX - translateX;
+                            startY = e.clientY - translateY;
+                            modalImg.style.cursor = 'grabbing';
+                        }
+                    });
+                    
+                    document.addEventListener('mousemove', function(e) {
+                        if (isDragging && currentZoom > 1) {
+                            translateX = e.clientX - startX;
+                            translateY = e.clientY - startY;
+                            updateImageTransform();
+                        }
+                    });
+                    
+                    document.addEventListener('mouseup', function() {
+                        isDragging = false;
+                        if (modalImg && currentZoom > 1) {
+                            modalImg.style.cursor = 'grab';
+                        }
+                    });
+                    
+                    // 双击重置缩放
+                    modalImg.addEventListener('dblclick', function() {
+                        resetZoom();
+                    });
+                }
+>>>>>>> e4b2f63 (feat: fix image bugs)
             } catch (e) {
                 console.error('Error initializing report:', e);
             }

@@ -5,7 +5,10 @@ go 1.25
 require (
 	github.com/chromedp/chromedp v0.14.1
 	github.com/gookit/color v1.5.4
+<<<<<<< HEAD
 	github.com/klarkxy/gohtml v0.0.0-20220513090653-4beafb6047e9
+=======
+>>>>>>> e4b2f63 (feat: fix image bugs)
 )
 
 require (

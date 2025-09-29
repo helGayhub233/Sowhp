@@ -109,7 +109,11 @@ func GetTimeStrin() string {
 	counter := 1
 
 	for {
+<<<<<<< HEAD
 		resultName := fmt.Sprintf("%s%03d", dateString, counter)
+=======
+		resultName := fmt.Sprintf("%s%04d", dateString, counter)
+>>>>>>> e4b2f63 (feat: fix image bugs)
 		resultPath := fmt.Sprintf("%s/result_%s", baseDir, resultName)
 
 		if _, err := os.Stat(resultPath); os.IsNotExist(err) {
