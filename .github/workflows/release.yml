@@ -11,6 +11,7 @@ jobs:
     name: Build for multiple platforms
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false  # 允许其他平台继续构建，即使某个平台失败
       matrix:
         include:
           - goos: windows
@@ -39,7 +40,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v5
       with:
-        go-version: '1.25'
+        go-version: '1.23'
 
     - name: Cache Go modules
       uses: actions/cache@v4
@@ -58,7 +59,9 @@ jobs:
         CGO_ENABLED: 0
       run: |
         mkdir -p dist
+        echo "Building for ${{ matrix.goos }}/${{ matrix.goarch }}"
         go build -ldflags="-s -w" -o dist/sowhp-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.suffix }} main.go
+        ls -la dist/
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
