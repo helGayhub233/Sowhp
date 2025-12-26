@@ -7,6 +7,9 @@ Sowhp.exe
 *.so
 *.dylib
 
+# Scripts
+build.sh
+
 # Logs
 *.log
 logs/
