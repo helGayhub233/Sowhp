@@ -1,4 +1,12 @@
-# Sowhp 网站截图工具
+<h1 align="center">Sowhp 网站截图工具</h1>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Golang-orange.svg" alt="技术栈"/>
+  <img src="https://img.shields.io/badge/1.0-purple.svg" alt="支持版本"/>
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=helGayhub233.Sowhp" alt="访问次数"/>
+  <a href="https://github.com/helGayhub233/Sowhp/releases"><img src="https://img.shields.io/github/downloads/helGayhub233/Sowhp/total" alt="下载次数"/></a>
+</p>
+
 <img src="https://raw.githubusercontent.com/helGayhub233/Sowhp/refs/heads/main/images/example_1.png" alt="示例图片" width="410" height="300"><img src="https://raw.githubusercontent.com/helGayhub233/Sowhp/refs/heads/main/images/example_2.png" alt="示例图片" width="400" height="300">
 ## 工具介绍
 
