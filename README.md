@@ -4,9 +4,6 @@
   <img src="https://img.shields.io/badge/Language-Go-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Language Go"/>
   <img src="https://img.shields.io/badge/Version-v1.0-purple?style=flat-square" alt="Version"/>
   <a href="https://github.com/helGayhub233/Sowhp/releases">
-    <img src="https://img.shields.io/github/v/release/helGayhub233/Sowhp?style=flat-square" alt="Latest Release"/>
-  </a>
-  <a href="https://github.com/helGayhub233/Sowhp/releases">
     <img src="https://img.shields.io/github/downloads/helGayhub233/Sowhp/total?style=flat-square" alt="Downloads"/>
   </a>
   <img src="https://visitor-badge.laobi.icu/badge?page_id=helGayhub233.Sowhp&style=flat-square" alt="Visitors"/>
